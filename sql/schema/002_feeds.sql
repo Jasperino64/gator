@@ -1,0 +1,17 @@
+-- +goose up
+DROP TABLE IF EXISTS feeds;
+CREATE TABLE feeds (
+    id UUID PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    url VARCHAR(255) NOT NULL UNIQUE,
+    user_id UUID NOT NULL,
+    CONSTRAINT fk_user
+        FOREIGN KEY(user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);
+
+-- +goose down
+DROP TABLE feeds;
