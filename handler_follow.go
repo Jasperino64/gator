@@ -32,4 +32,3 @@ func handlerFollow(state *state, cmd command, user database.User) error {
 	fmt.Printf("User: %s\n", followingFeed.UserName)
 	return nil
 }
-
