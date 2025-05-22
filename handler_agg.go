@@ -34,7 +34,7 @@ func handlerAgg(s *state, cmd command) error {
 func scrapeFeeds(s *state) {
 	feed, err := s.db.GetNextFeedToFetch(context.Background())
 	if err != nil {
-		log.Printf("error fetching feed: %w", err)
+		log.Printf("error fetching feed: %v", err)
 	}
 	scrapeFeed(s, feed)
 }
