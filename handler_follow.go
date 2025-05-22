@@ -9,21 +9,12 @@ import (
 	"github.com/google/uuid"
 )
 
-func handlerAddFeed(state *state, cmd command, user database.User) error {
-	if len(cmd.args) < 2 {
-		return fmt.Errorf("usage: addfeed <feed_name> <feed_url>")
+func handlerFollow(state *state, cmd command, user database.User) error {
+	if len(cmd.args) < 1 {
+		return fmt.Errorf("usage: follow <url>")
 	}
-	feedName := cmd.args[0]
-	feedUrl := cmd.args[1]
-	feed, err := state.db.CreateFeed(context.Background(), database.CreateFeedParams{
-		ID:   uuid.New(),
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-		Name: feedName,
-		Url:  feedUrl,
-		UserID: user.ID,
-	})
-	fmt.Printf("Feed added: %s\n", feed.Name)
+	feedUrl := cmd.args[0]
+	feed, err := state.db.GetFeedByUrl(context.Background(), feedUrl)
 	if err != nil {
 		return fmt.Errorf("error fetching feed: %w", err)
 	}
@@ -38,5 +29,7 @@ func handlerAddFeed(state *state, cmd command, user database.User) error {
 		return fmt.Errorf("error following feed: %w", err)
 	}
 	fmt.Printf("Successfully followed feed: %s\n", followingFeed.FeedName)
+	fmt.Printf("User: %s\n", followingFeed.UserName)
 	return nil
 }
+
